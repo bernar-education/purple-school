@@ -24,20 +24,27 @@ type account struct {
 }
 
 func main() {
-	login := promptData("Login: ")
-	password := promptData("Password: ")
-	url := promptData("Url: ")
+	login := promptData("Input login")
+	password := promptData("Input password")
+	url := promptData("Input url")
 
-	outputPassword(login, password, url)
+	myAccount := account{
+		password: password,
+		url:      url,
+		login:   login,
+	}
+
+	outputPassword(&myAccount)
 }
 
 func promptData(prompt string) string {
-	fmt.Print(prompt)
+	fmt.Print(prompt + ": ")
 	var res string
 	fmt.Scan(&res)
 	return res
 }
 
-func outputPassword(login, password, url string) {
-	fmt.Println(login, password, url)
+func outputPassword(acc *account) {
+	fmt.Println(acc)
+	fmt.Println(acc.login, acc.password, acc.url)
 }
