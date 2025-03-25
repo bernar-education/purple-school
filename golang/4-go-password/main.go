@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand/v2"
+)
 
 // func main() {
 // 	a := [4]int{1, 2, 3, 4}
@@ -23,7 +26,10 @@ type account struct {
 	url      string
 }
 
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()")
+
 func main() {
+	fmt.Println(generatePassword(8))
 	login := promptData("Input login")
 	password := promptData("Input password")
 	url := promptData("Input url")
@@ -47,4 +53,12 @@ func promptData(prompt string) string {
 func outputPassword(acc *account) {
 	fmt.Println(acc)
 	fmt.Println(acc.login, acc.password, acc.url)
+}
+
+func generatePassword(n int) string {
+	res := make([]rune, n)
+	for i := range res {
+		res[i] = letterRunes[rand.IntN(len(letterRunes))]
+	}
+	return string(res)
 }
