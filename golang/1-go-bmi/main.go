@@ -9,14 +9,14 @@ import (
 const imtPower = 2;
 
 func main() {
-	fmt.Println("___ Калькулятор индекса массы тела ___")
+	fmt.Println("___ BMI Calculator ___")
 	for {
 		height, weight := getUserInput()
 		IMT, err := calculateIMT(height, weight)
 		if err != nil {
-			fmt.Println("Некорректные данные")
+			fmt.Println("Invalid input")
 			continue
-			// panic("Нfекорректные данные")
+			// panic("Invalid input")
 		}
 		outputResult(IMT)
 		if !checkRepeatCalculation() {
@@ -26,17 +26,17 @@ func main() {
 }
 
 func outputResult(imt float64) {
-	result := fmt.Sprintf("Ваш индекс массы тела: %.0f", imt)
+	result := fmt.Sprintf("Your BMI: %.0f", imt)
 	fmt.Println(result)
 	switch {
 	case imt < 16:
-		fmt.Println("У вас сильный дефицит массы тела")
+        fmt.Println("You have a severe weight deficiency")
 	case imt < 18.5:
-		fmt.Println("У вас дефицит массы тела")
+        fmt.Println("You have a weight deficiency")
 	case imt < 25:
-		fmt.Println("У вас нормальный вес")
+        fmt.Println("You have a normal weight")
 	default:
-		fmt.Println("У вас степень ожирения")
+        fmt.Println("You have a degree of obesity")
 	}
 }
 
@@ -51,16 +51,16 @@ func calculateIMT(height float64, weight float64) (float64, error) {
 func getUserInput() (float64, float64) {
 	var height float64
 	var weight float64
-	fmt.Print("Введите свой рост в сантиметрах: ")
+	fmt.Print("Enter your height in centimeters: ")
 	fmt.Scan(&height)
-	fmt.Print("Введите свой вес: ")
+    fmt.Print("Enter your weight: ")
 	fmt.Scan(&weight)
 	return height, weight
 }
 
 func checkRepeatCalculation() bool {
 	var repeat string
-	fmt.Println("Хотите продолжить? (y/n): ")
+	fmt.Println("Do you want to calculate again? (y/n): ")
 	fmt.Scan(&repeat)
 	if repeat == "y" || repeat == "Y" {
 		return true

@@ -2,10 +2,10 @@ package main
 
 import "fmt"
 
-// В цикле спрашиваем ввод транзакции: 10, 20, 30, 40
-// Добавлять каждую транзакцию в массим транзакции
-// Вывести массив
-// !Вывести сумму баланса в консоль
+// In a loop, ask for transaction input: 10, 20, 30, 40
+// Add each transaction to the transactions array
+// Print the array
+// !Print the total balance to the console
 
 func main() {
 	transactions := []float64{}
@@ -17,12 +17,12 @@ func main() {
 		transactions = append(transactions, transaction)
 	}
 	balance := calculateBalance(transactions)
-	fmt.Printf("Сумма всех транзакций: %.2f", balance)
+	fmt.Printf("Sum of all transactions: %.2f", balance)
 }
 
 func getInputTransaction() float64 {
 	var transaction float64
-	fmt.Print("Введите значение (для выхода введите n): ")
+	fmt.Print("Input transaction value (for exit enter n): ")
 	fmt.Scan(&transaction)
 	return transaction
 }
