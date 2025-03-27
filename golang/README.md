@@ -21,3 +21,8 @@ go build
 ```bash
 go get github.com/fatih/color
 ```
+* clear dependencies in go
+```bash
+go mod tidy
+```
+
