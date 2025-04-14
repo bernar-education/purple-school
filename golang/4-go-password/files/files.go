@@ -6,12 +6,12 @@ import (
 )
 
 
-func WriteToFile(content string, name string) {
+func WriteToFile(content []byte, name string) {
     file, err := os.Create(name)
     if err != nil {
         fmt.Println(err)
     }
-    _, err = file.WriteString(content)
+    _, err = file.Write(content)
 
     defer file.Close()
 

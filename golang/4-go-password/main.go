@@ -8,20 +8,25 @@ import (
 
 
 func main() {
-    files.ReadFromFile()
-    files.WriteToFile("Привет", "file.txt")
-	login := promptData("Input login")
+    createAccount()
+}
+
+func createAccount() {
+    login := promptData("Input login")
 	password := promptData("Input password")
 	url := promptData("Input url")
 
-	myAccount, err := account.NewAccountWithTimeStamp(login, password, url)
+	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
 		fmt.Println("Invalid url format")
 		return
 	}
-	myAccount.OutputPassword()
-
-	fmt.Println(myAccount)
+	file, err :=myAccount.ToByteSlice()
+	if err != nil {
+		fmt.Println("Can't convert to byte slice")
+		return
+	}
+    files.WriteToFile(file, "data.json")
 }
 
 func promptData(prompt string) string {
