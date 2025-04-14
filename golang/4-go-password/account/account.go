@@ -5,15 +5,17 @@ import (
 	"math/rand/v2"
 	"net/url"
 	"time"
+	"reflect"
+	"fmt"
 	"github.com/fatih/color"
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()")
 
 type Account struct {
-	login    string
-	password string
-	url      string
+	login    string `json:"login" xml:"login"`
+	password string `json:"password"`
+	url      string `json:"url"`
 }
 
 type AccountWithTimeStamp struct {
@@ -53,6 +55,10 @@ func NewAccountWithTimeStamp(login, password, urlString string) (*AccountWithTim
 			url:      urlString,
 		},
 	}
+
+    field, _ := reflect.TypeOf(newAcc).Elem().FieldByName("login")
+    fmt.Println(string(field.Tag))
+
 	if password == "" {
 		newAcc.GeneratePassword(12)
 	}
