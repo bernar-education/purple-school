@@ -5,16 +5,15 @@ import (
 	"math/rand/v2"
 	"net/url"
 	"time"
-	"encoding/json"
 	"github.com/fatih/color"
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()")
 
 type Account struct {
-	Login       string     `json:"login"`
-	Password    string     `json:"password"`
-	Url         string     `json:"url"`
+	Login       string      `json:"login"`
+	Password    string      `json:"password"`
+	Url         string      `json:"url"`
     CreatedAt   time.Time   `json:"createdAt"`
 	UpdatedAt   time.Time   `json:"updatedAt"`
 }
@@ -23,13 +22,6 @@ func (acc *Account) OutputPassword() {
 	color.Red("Login: %s\nPassword: %s\nUrl: %s\n", acc.Login, acc.Password, acc.Url)
 }
 
-func (acc *Account) ToByteSlice() ([]byte, error) {
-    file, err := json.Marshal(acc)
-    if err != nil {
-        return nil, err
-    }
-    return file, nil
-}
 
 func (acc *Account) GeneratePassword(n int) {
 	res := make([]rune, n)

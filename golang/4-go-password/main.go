@@ -8,8 +8,48 @@ import (
 
 
 func main() {
-    createAccount()
+    // 1. Create account
+    // 2. Search account
+    // 3. Remove account
+    // 4. Exit
+    fmt.Println("__Password manager__")
+Menu:
+    for {
+        variant := getMenu()
+        switch variant {
+        case 1:
+            createAccount()
+        case 2:
+            searchAccount()
+        case 3:
+            deleteAccount()
+        default:
+            break Menu
+        }
+    }
 }
+
+func getMenu() int {
+    var variant int
+    fmt.Println("Choose variant: ")
+    fmt.Println("1. Create account")
+    fmt.Println("2. Search account")
+    fmt.Println("3. Remove account")
+    fmt.Println("4. Exit")
+    fmt.Scan(&variant)
+    return variant
+}
+
+
+func searchAccount() {
+
+}
+
+
+func deleteAccount() {
+
+}
+
 
 func createAccount() {
     login := promptData("Input login")
@@ -21,12 +61,14 @@ func createAccount() {
 		fmt.Println("Invalid url format")
 		return
 	}
-	file, err :=myAccount.ToByteSlice()
+    vault := account.NewVault()
+    vault.AddAccount(*myAccount)
+    data, err := vault.ToByteSlice()
 	if err != nil {
 		fmt.Println("Can't convert to byte slice")
 		return
 	}
-    files.WriteToFile(file, "data.json")
+    files.WriteToFile(data, "data.json")
 }
 
 func promptData(prompt string) string {

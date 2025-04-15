@@ -1,7 +1,12 @@
 {
-  "login": "BerBer",
-  "password": "Baskino123",
-  "url": "https://berber.com",
-  "createdAt": "2025-04-14T14:40:19.741006+05:00",
-  "updatedAt": "2025-04-14T14:40:19.741006+05:00"
+  "accounts": [
+    {
+      "login": "bernar",
+      "password": "123",
+      "url": "https://berber.com",
+      "createdAt": "2025-04-15T13:32:13.123952+05:00",
+      "updatedAt": "2025-04-15T13:32:13.123953+05:00"
+    }
+  ],
+  "updatedAt": "2025-04-15T13:32:13.123956+05:00"
 }
