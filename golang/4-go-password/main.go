@@ -2,8 +2,8 @@ package main
 
 import (
 	"demo/password/account"
-	"demo/password/files"
 	"fmt"
+	"github.com/fatih/color"
 )
 
 
@@ -13,14 +13,15 @@ func main() {
     // 3. Remove account
     // 4. Exit
     fmt.Println("__Password manager__")
+    vault := account.NewVault()
 Menu:
     for {
         variant := getMenu()
         switch variant {
         case 1:
-            createAccount()
+            createAccount(vault)
         case 2:
-            searchAccount()
+            searchAccount(vault)
         case 3:
             deleteAccount()
         default:
@@ -41,8 +42,18 @@ func getMenu() int {
 }
 
 
-func searchAccount() {
-
+func searchAccount(vault *account.Vault) {
+    // URL
+    url := promptData("Input URL for search")
+    // Search
+    accounts := vault.FindAccountByUrl(url)
+    if len(accounts) == 0 {
+        color.Red("Accounts Not Found")
+    }
+    // Output
+    for _, account := range accounts {
+        account.Output()
+    }
 }
 
 
@@ -51,7 +62,7 @@ func deleteAccount() {
 }
 
 
-func createAccount() {
+func createAccount(vault *account.Vault) {
     login := promptData("Input login")
 	password := promptData("Input password")
 	url := promptData("Input url")
@@ -61,14 +72,7 @@ func createAccount() {
 		fmt.Println("Invalid url format")
 		return
 	}
-    vault := account.NewVault()
     vault.AddAccount(*myAccount)
-    data, err := vault.ToByteSlice()
-	if err != nil {
-		fmt.Println("Can't convert to byte slice")
-		return
-	}
-    files.WriteToFile(data, "data.json")
 }
 
 func promptData(prompt string) string {

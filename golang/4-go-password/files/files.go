@@ -22,11 +22,10 @@ func WriteToFile(content []byte, name string) {
     fmt.Println("File created successfully")
 }
 
-func ReadFromFile() {
-    data, err := os.ReadFile("./file.txt")
+func ReadFromFile(name string) ([]byte, error) {
+    data, err := os.ReadFile(name)
     if err != nil {
-        fmt.Println(err)
-        return
+        return nil, err
     }
-    fmt.Println(data)
+    return data, nil
 }
