@@ -66,3 +66,25 @@ func (vault *Vault) AddAccount(acc Account) {
     }
     files.WriteToFile(data, "data.json")
 }
+
+
+func (vault * Vault) DeleteAccountByUrl(url string) bool {
+    var accounts []Account
+    isDeleted := false
+    for _, account := range vault.Accounts {
+        isMatched := strings.Contains(account.Url, url)
+        if !isMatched {
+            accounts = append(accounts, account)
+            continue
+        }
+        isDeleted = true
+    }
+    vault.Accounts = accounts
+    vault.UpdatedAt = time.Now()
+    data, err := vault.ToByteSlice()
+    if err != nil {
+        color.Red("Can not convert to bytes")
+    }
+    files.WriteToFile(data, "data.json")
+    return isDeleted
+}
