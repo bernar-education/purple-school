@@ -4,7 +4,8 @@ import (
 	"demo/password/account"
 	"fmt"
 	"github.com/fatih/color"
-	"demo/password/files"
+	// "demo/password/files"
+	"demo/password/cloud"
 )
 
 
@@ -14,7 +15,8 @@ func main() {
     // 3. Remove account
     // 4. Exit
     fmt.Println("__Password manager__")
-    vault := account.NewVault(files.NewJsonDb("data.json"))
+    // vault := account.NewVault(files.NewJsonDb("data.json"))
+    vault := account.NewVault(cloud.NewCloudDb("https://berber.com"))
 Menu:
     for {
         variant := getMenu()

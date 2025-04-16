@@ -1,9 +1,5 @@
 package cloud
 
-import (
-    "fmt"
-    "os"
-)
 
 type CloudDb struct {
     url string
@@ -17,7 +13,7 @@ func NewCloudDb(url string) *CloudDb {
 
 
 func (db *CloudDb) Read() ([]byte, error) {
-    return []bytes{}, nil
+    return []byte{}, nil
 }
 
 
