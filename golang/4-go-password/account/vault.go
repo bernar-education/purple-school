@@ -24,7 +24,8 @@ func (vault *Vault) ToByteSlice() ([]byte, error) {
 
 
 func NewVault() *Vault {
-    file, err := files.ReadFromFile("data.json")
+    db := files.NewJsonDb("data.json")
+    file, err := db.Read()
     if err != nil {
         return &Vault{
             Accounts: []Account{},
@@ -87,5 +88,6 @@ func (vault *Vault) save() {
     if err != nil {
         color.Red("Can not convert to bytes")
     }
-    files.WriteToFile(data, "data.json")
+    db := files.NewJsonDb("data.json")
+    db.Write(data)
 }
