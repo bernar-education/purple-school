@@ -4,6 +4,7 @@ import (
 	"demo/password/account"
 	"fmt"
 	"github.com/fatih/color"
+	"demo/password/files"
 )
 
 
@@ -13,7 +14,7 @@ func main() {
     // 3. Remove account
     // 4. Exit
     fmt.Println("__Password manager__")
-    vault := account.NewVault()
+    vault := account.NewVault(files.NewJsonDb("data.json"))
 Menu:
     for {
         variant := getMenu()
@@ -42,7 +43,7 @@ func getMenu() int {
 }
 
 
-func searchAccount(vault *account.Vault) {
+func searchAccount(vault *account.VaultWithDb) {
     // URL
     url := promptData("Input URL for search")
     // Search
@@ -57,7 +58,7 @@ func searchAccount(vault *account.Vault) {
 }
 
 
-func deleteAccount(vault *account.Vault) {
+func deleteAccount(vault *account.VaultWithDb) {
     // URL
     url := promptData("Input URL for delete")
     // Remove from vault
@@ -71,7 +72,7 @@ func deleteAccount(vault *account.Vault) {
 }
 
 
-func createAccount(vault *account.Vault) {
+func createAccount(vault *account.VaultWithDb) {
     login := promptData("Input login")
 	password := promptData("Input password")
 	url := promptData("Input url")

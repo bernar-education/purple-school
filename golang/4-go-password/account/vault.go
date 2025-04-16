@@ -14,6 +14,12 @@ type Vault struct {
 }
 
 
+type VaultWithDb struct {
+    Vault
+    db files.JsonDb
+}
+
+
 func (vault *Vault) ToByteSlice() ([]byte, error) {
     file, err := json.Marshal(vault)
     if err != nil {
@@ -23,32 +29,39 @@ func (vault *Vault) ToByteSlice() ([]byte, error) {
 }
 
 
-func NewVault() *Vault {
-    db := files.NewJsonDb("data.json")
+func NewVault(db *files.JsonDb) *VaultWithDb {
     file, err := db.Read()
     if err != nil {
-        return &Vault{
-            Accounts: []Account{},
-            UpdatedAt: time.Now(),
+        return &VaultWithDb{
+            Vault: Vault{
+                Accounts: []Account{},
+                UpdatedAt: time.Now(),
+            },
+            db: *db,
         }
     }
-
     var vault Vault
     err = json.Unmarshal(file, &vault)
     if err != nil {
         color.Red("Can not unmarshal file data")
-        return &Vault{
-            Accounts: []Account{},
-            UpdatedAt: time.Now(),
+        return  &VaultWithDb{
+            Vault: Vault{
+                Accounts: []Account{},
+                UpdatedAt: time.Now(),
+            },
+            db: *db,
         }
     }
-    return &vault
+    return &VaultWithDb{
+        Vault: vault,
+        db: *db,
+    }
 }
 
 
-func (vault *Vault) FindAccountByUrl(url string) []Account {
+func (vault *VaultWithDb) FindAccountByUrl(url string) []Account {
     var accounts []Account
-    for _, account := range vault.Accounts {
+    for _, account := range vault.Vault.Accounts {
         isMatched := strings.Contains(account.Url, url)
         if isMatched {
             accounts = append(accounts, account)
@@ -58,13 +71,13 @@ func (vault *Vault) FindAccountByUrl(url string) []Account {
 }
 
 
-func (vault *Vault) AddAccount(acc Account) {
+func (vault *VaultWithDb) AddAccount(acc Account) {
     vault.Accounts = append(vault.Accounts, acc)
     vault.save()
 }
 
 
-func (vault * Vault) DeleteAccountByUrl(url string) bool {
+func (vault *VaultWithDb) DeleteAccountByUrl(url string) bool {
     var accounts []Account
     isDeleted := false
     for _, account := range vault.Accounts {
@@ -82,12 +95,11 @@ func (vault * Vault) DeleteAccountByUrl(url string) bool {
 }
 
 
-func (vault *Vault) save() {
+func (vault *VaultWithDb) save() {
     vault.UpdatedAt = time.Now()
-    data, err := vault.ToByteSlice()
+    data, err := vault.Vault.ToByteSlice()
     if err != nil {
         color.Red("Can not convert to bytes")
     }
-    db := files.NewJsonDb("data.json")
-    db.Write(data)
+    vault.db.Write(data)
 }
