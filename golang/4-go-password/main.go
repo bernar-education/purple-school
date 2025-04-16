@@ -3,8 +3,9 @@ package main
 import (
 	"demo/password/account"
 	"fmt"
-	"github.com/fatih/color"
 	"demo/password/files"
+	"demo/password/output"
+	"github.com/fatih/color"
 )
 
 
@@ -14,6 +15,7 @@ func main() {
     // 3. Remove account
     // 4. Exit
     fmt.Println("__Password manager__")
+    // vault := account.NewVault(cloud.NewCloudDb("https://berber.com"))
     vault := account.NewVault(files.NewJsonDb("data.json"))
 Menu:
     for {
@@ -49,7 +51,7 @@ func searchAccount(vault *account.VaultWithDb) {
     // Search
     accounts := vault.FindAccountByUrl(url)
     if len(accounts) == 0 {
-        color.Red("Accounts Not Found")
+        output.PrintError("Accounts Not Found")
     }
     // Output
     for _, account := range accounts {
@@ -67,7 +69,7 @@ func deleteAccount(vault *account.VaultWithDb) {
     if isDeleted {
         color.Green("Removed")
     } else {
-        color.Red("Not found")
+        output.PrintError("Not found")
     }
 }
 
@@ -79,7 +81,7 @@ func createAccount(vault *account.VaultWithDb) {
 
 	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
-		fmt.Println("Invalid url format")
+		output.PrintError("Invalid url format")
 		return
 	}
     vault.AddAccount(*myAccount)

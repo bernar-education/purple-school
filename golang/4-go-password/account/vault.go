@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 	"strings"
-	"github.com/fatih/color"
+	"demo/password/output"
 )
 
 
@@ -59,7 +59,7 @@ func NewVault(db Db) *VaultWithDb {
     var vault Vault
     err = json.Unmarshal(file, &vault)
     if err != nil {
-        color.Red("Can not unmarshal file data")
+        output.PrintError("Can not unmarshal file data")
         return  &VaultWithDb{
             Vault: Vault{
                 Accounts: []Account{},
@@ -115,7 +115,7 @@ func (vault *VaultWithDb) save() {
     vault.UpdatedAt = time.Now()
     data, err := vault.Vault.ToByteSlice()
     if err != nil {
-        color.Red("Can not convert to bytes")
+        output.PrintError(err)
     }
     vault.db.Write(data)
 }
