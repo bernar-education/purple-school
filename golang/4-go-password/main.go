@@ -19,13 +19,19 @@ func main() {
     vault := account.NewVault(files.NewJsonDb("data.json"))
 Menu:
     for {
-        variant := getMenu()
+        variant := promptData([]string{
+            "1. Create account",
+            "2. Search account",
+            "3. Remove account",
+            "4. Exit",
+            "Choose variant: ",
+        })
         switch variant {
-        case 1:
+        case "1":
             createAccount(vault)
-        case 2:
+        case "2":
             searchAccount(vault)
-        case 3:
+        case "3":
             deleteAccount(vault)
         default:
             break Menu
@@ -33,21 +39,10 @@ Menu:
     }
 }
 
-func getMenu() int {
-    var variant int
-    fmt.Println("Choose variant: ")
-    fmt.Println("1. Create account")
-    fmt.Println("2. Search account")
-    fmt.Println("3. Remove account")
-    fmt.Println("4. Exit")
-    fmt.Scan(&variant)
-    return variant
-}
-
 
 func searchAccount(vault *account.VaultWithDb) {
     // URL
-    url := promptData("Input URL for search")
+    url := promptData([]string{"Input URL for search"})
     // Search
     accounts := vault.FindAccountByUrl(url)
     if len(accounts) == 0 {
@@ -62,7 +57,7 @@ func searchAccount(vault *account.VaultWithDb) {
 
 func deleteAccount(vault *account.VaultWithDb) {
     // URL
-    url := promptData("Input URL for delete")
+    url := promptData([]string{"Input URL for delete"})
     // Remove from vault
     isDeleted := vault.DeleteAccountByUrl(url)
     // Check is removed or not
@@ -75,9 +70,9 @@ func deleteAccount(vault *account.VaultWithDb) {
 
 
 func createAccount(vault *account.VaultWithDb) {
-    login := promptData("Input login")
-	password := promptData("Input password")
-	url := promptData("Input url")
+    login := promptData([]string{"Input login"})
+	password := promptData([]string{"Input password"})
+	url := promptData([]string{"Input url"})
 
 	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
@@ -87,8 +82,16 @@ func createAccount(vault *account.VaultWithDb) {
     vault.AddAccount(*myAccount)
 }
 
-func promptData(prompt string) string {
-	fmt.Print(prompt + ": ")
+
+// Func receive slice of any type
+func promptData[T any](prompt []T) string {
+    for i, line := range prompt {
+        if i == len(prompt)-1 {
+	        fmt.Printf("%v: ", line)
+        } else {
+            fmt.Println(line)
+        }
+    }
 	var res string
 	fmt.Scan(&res)
 	return res
