@@ -3,6 +3,7 @@ package main
 import (
 	"demo/password/account"
 	"fmt"
+	"strings"
 	"demo/password/files"
 	"demo/password/output"
 	"github.com/fatih/color"
@@ -46,7 +47,9 @@ func searchAccount(vault *account.VaultWithDb) {
     // URL
     url := promptData([]string{"Input URL for search"})
     // Search
-    accounts := vault.FindAccountByUrl(url)
+    accounts := vault.FindAccounts(url, func(acc account.Account, str string)bool {
+        return strings.Contains(acc.Url, str)
+    })
     if len(accounts) == 0 {
         output.PrintError("Accounts Not Found")
     }
