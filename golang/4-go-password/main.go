@@ -1,9 +1,9 @@
 package main
 
 import (
-	"demo/password/account"
 	"fmt"
 	"strings"
+	"demo/password/account"
 	"demo/password/files"
 	"demo/password/output"
 	"github.com/fatih/color"
@@ -12,28 +12,33 @@ import (
 
 var menu = map[string]func(*account.VaultWithDb){
     "1": createAccount,
-    "2": searchAccount,
-    "3": deleteAccount,
+    "2": searchAccountByUrl,
+    "3": searchAccountByLogin,
+    "4": deleteAccount,
+}
+
+
+var menuVariants = []string{
+    "1. Create account",
+    "2. Search account by URL",
+    "3. Search account by Login",
+    "4. Remove account",
+    "5. Exit",
+    "Choose variant: ",
 }
 
 
 func main() {
     // 1. Create account
-    // 2. Search account
-    // 3. Remove account
-    // 4. Exit
+    // 2. Search account by URL
+    // 3. Search account by Login
+    // 4 Remove account
+    // 5. Exit
     fmt.Println("__Password manager__")
-    // vault := account.NewVault(cloud.NewCloudDb("https://berber.com"))
     vault := account.NewVault(files.NewJsonDb("data.json"))
 Menu:
     for {
-        variant := promptData([]string{
-            "1. Create account",
-            "2. Search account",
-            "3. Remove account",
-            "4. Exit",
-            "Choose variant: ",
-        })
+        variant := promptData(menuVariants...)
         menuFunc := menu[variant]
         if menuFunc == nil {
             break Menu
@@ -43,18 +48,35 @@ Menu:
 }
 
 
-func searchAccount(vault *account.VaultWithDb) {
+func searchAccountByUrl(vault *account.VaultWithDb) {
     // URL
-    url := promptData([]string{"Input URL for search"})
+    url := promptData("Input URL for search")
     // Search
     accounts := vault.FindAccounts(url, func(acc account.Account, str string)bool {
         return strings.Contains(acc.Url, str)
     })
-    if len(accounts) == 0 {
+    // Output
+    outputResult(&accounts)
+}
+
+
+func searchAccountByLogin(vault *account.VaultWithDb) {
+    // Login
+    login := promptData("Input Login for search")
+    // Search
+    accounts := vault.FindAccounts(login, func(acc account.Account, str string)bool {
+        return strings.Contains(acc.Login, str)
+    })
+    // Output
+    outputResult(&accounts)
+}
+
+
+func outputResult(accounts *[]account.Account) {
+    if len(*accounts) == 0 {
         output.PrintError("Accounts Not Found")
     }
-    // Output
-    for _, account := range accounts {
+    for _, account := range *accounts {
         account.Output()
     }
 }
@@ -62,7 +84,7 @@ func searchAccount(vault *account.VaultWithDb) {
 
 func deleteAccount(vault *account.VaultWithDb) {
     // URL
-    url := promptData([]string{"Input URL for delete"})
+    url := promptData("Input URL for delete")
     // Remove from vault
     isDeleted := vault.DeleteAccountByUrl(url)
     // Check is removed or not
@@ -75,9 +97,9 @@ func deleteAccount(vault *account.VaultWithDb) {
 
 
 func createAccount(vault *account.VaultWithDb) {
-    login := promptData([]string{"Input login"})
-	password := promptData([]string{"Input password"})
-	url := promptData([]string{"Input url"})
+    login := promptData("Input login")
+	password := promptData("Input password")
+	url := promptData("Input url")
 
 	myAccount, err := account.NewAccount(login, password, url)
 	if err != nil {
@@ -89,7 +111,7 @@ func createAccount(vault *account.VaultWithDb) {
 
 
 // Func receive slice of any type
-func promptData[T any](prompt []T) string {
+func promptData(prompt ...string) string {
     for i, line := range prompt {
         if i == len(prompt)-1 {
 	        fmt.Printf("%v: ", line)
