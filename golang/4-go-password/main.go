@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"demo/password/account"
 	"demo/password/files"
 	"demo/password/output"
+
 	"github.com/fatih/color"
+	"github.com/joho/godotenv"
 )
 
 
@@ -44,6 +47,16 @@ func main() {
     // 4 Remove account
     // 5. Exit
     fmt.Println("__Password manager__")
+    err := godotenv.Load()
+    if err != nil {
+        output.PrintError("Can not find .env file")
+    }
+
+    for _, e := range os.Environ() {
+        pair := strings.SplitN(e, "=", 2)
+        fmt.Println(pair)
+    }
+
     vault := account.NewVault(files.NewJsonDb("data.json"))
     counter := menuCounter()
 Menu:
