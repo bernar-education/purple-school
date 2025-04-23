@@ -28,6 +28,15 @@ var menuVariants = []string{
 }
 
 
+func menuCounter() func() {
+    i := 0
+    return func() {
+        i++
+        fmt.Println(i)
+    }
+}
+
+
 func main() {
     // 1. Create account
     // 2. Search account by URL
@@ -36,8 +45,10 @@ func main() {
     // 5. Exit
     fmt.Println("__Password manager__")
     vault := account.NewVault(files.NewJsonDb("data.json"))
+    counter := menuCounter()
 Menu:
     for {
+        counter()
         variant := promptData(menuVariants...)
         menuFunc := menu[variant]
         if menuFunc == nil {
