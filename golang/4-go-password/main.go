@@ -7,6 +7,7 @@ import (
 	"demo/password/account"
 	"demo/password/files"
 	"demo/password/output"
+	"demo/password/encrypter"
 
 	"github.com/fatih/color"
 	"github.com/joho/godotenv"
@@ -50,11 +51,6 @@ func main() {
     err := godotenv.Load()
     if err != nil {
         output.PrintError("Can not find .env file")
-    }
-
-    for _, e := range os.Environ() {
-        pair := strings.SplitN(e, "=", 2)
-        fmt.Println(pair)
     }
 
     vault := account.NewVault(files.NewJsonDb("data.json"))

@@ -12,6 +12,7 @@
 ```bash
 go run main.go
 go run .
+NAME=Bernar go run .
 ```
 * build
 ```bash
