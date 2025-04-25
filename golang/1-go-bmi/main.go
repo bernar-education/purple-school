@@ -9,14 +9,20 @@ import (
 const imtPower = 2;
 
 func main() {
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("Recover ", r)
+        }
+    }()
+
 	fmt.Println("___ BMI Calculator ___")
 	for {
 		height, weight := getUserInput()
 		IMT, err := calculateIMT(height, weight)
 		if err != nil {
-			fmt.Println("Invalid input")
-			continue
-			// panic("Invalid input")
+			// fmt.Println("Invalid input, no params for calculation")
+			// continue
+			panic("Invalid input, no params for calculation")
 		}
 		outputResult(IMT)
 		if !checkRepeatCalculation() {
