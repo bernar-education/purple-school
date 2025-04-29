@@ -49,7 +49,8 @@ func main() {
 	}
 
 	vault := account.NewVault(
-		files.NewJsonDb("data.json"),
+		// files.NewJsonDb("data.json"),
+		files.NewJsonDb("data.vault"),
 		*encrypter.NewEncrypter(),
 	)
 	counter := menuCounter()

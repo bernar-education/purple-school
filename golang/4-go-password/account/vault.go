@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"strings"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 type ByteReader interface {
@@ -52,8 +54,10 @@ func NewVault(db Db, enc encrypter.Encrypter) *VaultWithDb {
 			enc: enc,
 		}
 	}
+	data := enc.Decrypt(file)
 	var vault Vault
-	err = json.Unmarshal(file, &vault)
+	err = json.Unmarshal(data, &vault)
+	color.Cyan("Found %d accounts", len(vault.Accounts))
 	if err != nil {
 		output.PrintError("Can not unmarshal file data")
 		return &VaultWithDb{
@@ -108,8 +112,9 @@ func (vault *VaultWithDb) DeleteAccountByUrl(url string) bool {
 func (vault *VaultWithDb) save() {
 	vault.UpdatedAt = time.Now()
 	data, err := vault.Vault.ToByteSlice()
+	encData := vault.enc.Encrypt(data)
 	if err != nil {
 		output.PrintError(err)
 	}
-	vault.db.Write(data)
+	vault.db.Write(encData)
 }
