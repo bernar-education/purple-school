@@ -1,43 +1,41 @@
 package files
 
 import (
-    "fmt"
-    "os"
 	"demo/password/output"
+	"fmt"
+	"os"
 )
 
 type JsonDb struct {
-    filename string
+	filename string
 }
 
 func NewJsonDb(name string) *JsonDb {
-    return &JsonDb{
-        filename: name,
-    }
+	return &JsonDb{
+		filename: name,
+	}
 }
-
 
 func (db *JsonDb) Read() ([]byte, error) {
-    data, err := os.ReadFile(db.filename)
-    if err != nil {
-        return nil, err
-    }
-    return data, nil
+	data, err := os.ReadFile(db.filename)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }
 
-
 func (db *JsonDb) Write(content []byte) {
-    file, err := os.Create(db.filename)
-    if err != nil {
-        output.PrintError(err)
-    }
-    _, err = file.Write(content)
+	file, err := os.Create(db.filename)
+	if err != nil {
+		output.PrintError(err)
+	}
+	_, err = file.Write(content)
 
-    defer file.Close()
+	defer file.Close()
 
-    if err != nil {
-        output.PrintError(err)
-        return
-    }
-    fmt.Println("File created successfully")
+	if err != nil {
+		output.PrintError(err)
+		return
+	}
+	fmt.Println("File created successfully")
 }

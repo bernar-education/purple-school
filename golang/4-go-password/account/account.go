@@ -5,17 +5,18 @@ import (
 	"math/rand/v2"
 	"net/url"
 	"time"
+
 	"github.com/fatih/color"
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()")
 
 type Account struct {
-	Login       string      `json:"login"`
-	Password    string      `json:"password"`
-	Url         string      `json:"url"`
-    CreatedAt   time.Time   `json:"createdAt"`
-	UpdatedAt   time.Time   `json:"updatedAt"`
+	Login     string    `json:"login"`
+	Password  string    `json:"password"`
+	Url       string    `json:"url"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func (acc *Account) Output() {
@@ -23,7 +24,6 @@ func (acc *Account) Output() {
 	color.Cyan("Password: %s", acc.Password)
 	color.Cyan("Url: %s", acc.Url)
 }
-
 
 func (acc *Account) GeneratePassword(n int) {
 	res := make([]rune, n)
@@ -46,9 +46,9 @@ func NewAccount(login, password, urlString string) (*Account, error) {
 	newAcc := &Account{
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
-        Password: password,
-        Login:    login,
-        Url:      urlString,
+		Password:  password,
+		Login:     login,
+		Url:       urlString,
 	}
 
 	if password == "" {
