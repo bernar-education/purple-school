@@ -9,7 +9,7 @@ import (
 
 func main() {
 	fmt.Println("___ Weather API ___")
-	city := flag.String("city", "Almaty", "person's city")
+	city := flag.String("city", "", "person's city")
 	format := flag.Int("format", 1, "Output weather format")
 
 	flag.Parse()
