@@ -3,7 +3,6 @@ package geo
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 )
@@ -22,7 +21,6 @@ func GetMyLocation(city string) (*GeoData, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(response.StatusCode)
 	if response.StatusCode != 200 {
 		return nil, errors.New("Bad status code")
 	}
