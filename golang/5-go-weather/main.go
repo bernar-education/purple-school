@@ -1,28 +1,24 @@
 package main
 
 import (
+	"demo/weather/geo"
 	"flag"
 	"fmt"
-	"io"
-	"strings"
 )
 
 func main() {
+	fmt.Println("___ Weather API ___")
 	city := flag.String("city", "", "person's city")
-	format := flag.Int("format", 1, "Output weather format")
+	// format := flag.Int("format", 1, "Output weather format")
 
 	flag.Parse()
 
 	fmt.Println(*city)
-	fmt.Println(*format)
-
-	reader := strings.NewReader("Hello, I'm data stream")
-	block := make([]byte, 4)
-	for {
-		_, err := reader.Read(block)
-		if err == io.EOF {
-			break
-		}
-		fmt.Printf("%q\n", block)
+	// fmt.Println(*format)
+	geoData, err := geo.GetMyLocation(*city)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
 	}
+	fmt.Println(geoData)
 }
