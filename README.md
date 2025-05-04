@@ -1,4 +1,5 @@
 
-### Golang course by Anton Larichev on PurpleSchool
+# IT courses by Anton Larichev on PurpleSchool
 
-Course link: [PurpleSchool](https://purpleschool.ru/course/go-basics)
+1. [Golang](https://github.com/bernar-education/purple-school/tree/main/golang/README.md)
+2. ...
