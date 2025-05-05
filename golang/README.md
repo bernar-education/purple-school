@@ -18,6 +18,10 @@ go run main.go
 go run .
 NAME=Bernar go run .
 ```
+* test
+```bash
+go test <path>
+```
 * build
 ```bash
 go build

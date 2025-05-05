@@ -16,10 +16,14 @@ type CityRopulationResponse struct {
 	Error bool `json:"error"`
 }
 
+var ErrorNoCity = errors.New("NOCITY")
+var ErrorNot200 = errors.New("NOT200code")
+
 func GetMyLocation(city string) (*GeoData, error) {
 	if city != "" {
-		if !checkCity(city) {
-			panic("City not found")
+		isCity := checkCity(city)
+		if !isCity {
+			return nil, ErrorNoCity
 		}
 		return &GeoData{
 			City: city,
@@ -30,7 +34,7 @@ func GetMyLocation(city string) (*GeoData, error) {
 		return nil, err
 	}
 	if response.StatusCode != 200 {
-		return nil, errors.New("Bad status code")
+		return nil, ErrorNot200
 	}
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
